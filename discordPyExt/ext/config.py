@@ -1,2 +1,0 @@
-class ConfigLoader:
-    pass

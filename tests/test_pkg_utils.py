@@ -1,7 +1,7 @@
 from discordPyExt.ext.testCase import TestCaseX
 from discordPyExt.utils.str import get_format_vars
 
-class utils(TestCaseX):
+class utils_get_format_vars(TestCaseX):
     def test_1(self):
         input = "hello, {user:str}"
         

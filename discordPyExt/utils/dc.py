@@ -9,7 +9,7 @@ from discordPyExt.utils.doNothing import DO_NOTHING_OBJECT
 async def load_extensions(
     bot : commands.Bot,
     folder_path : str,
-    skip_extensions : typing.List[str],
+    skip_extensions : typing.List[str] = [],
     logger : logging.Logger = DO_NOTHING_OBJECT
 ):
     if not os.path.isdir(folder_path):

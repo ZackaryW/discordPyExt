@@ -10,7 +10,7 @@ from discordPyExt.setup.interface import DcDeployerInterface
 from discordPyExt.setup.ext.bot import DeployBot
 import inspect
 
-from discordPyExt.setup.storage import DcDeployerStorage
+from discordPyExt.ext.storage import Storage
     
 class DcDeployer(DcDeployerInterface):
     """
@@ -101,7 +101,7 @@ class DcDeployer(DcDeployerInterface):
         # initilize loop
         self.loop = asyncio.get_event_loop()
         
-        self.storage : DcDeployerStorage = DcDeployerStorage()
+        self.storage : Storage = Storage()
 
         # setup config
         self.config : DataLoader = DataLoader.create_default(
@@ -216,4 +216,12 @@ class DcDeployer(DcDeployerInterface):
                 ext.run()
         
         self._deploy_bot.run()
+    
+    def isInit(self, extension : DcExtension) -> bool:
+        """
+        checks if an extension is initialized
         
+        Args:
+            `extension` (DcExtension)
+        """
+        return extension._hash in self.extensions

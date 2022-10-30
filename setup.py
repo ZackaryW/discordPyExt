@@ -27,5 +27,16 @@ setup(
         # for devs
         "Intended Audience :: Developers",
     ],
-
+    #requires
+    python_requires='>=3.6',
+    install_requires=[
+        "discord.py",
+        "pydantic",
+    ],
+    extras_require={
+        "deploy" : [
+            "flask",
+            "flask_sqlalchemy",
+        ]
+    }
 )

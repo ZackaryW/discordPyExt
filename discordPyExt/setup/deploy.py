@@ -212,7 +212,7 @@ class DcDeployer(DcDeployerInterface):
         runs the server
         """
         
-        for ext in self.extensions:
+        for ext in self.extensions.values():
             ext : DcExtension
             if inspect.iscoroutinefunction(ext.run):
                 self.loop.create_task(ext.run())

@@ -48,7 +48,7 @@ class DeployFlask(DcExtension):
         self.flask_app.config.update(FLASK_OTHER_CONFIG)
 
         # load blueprints
-        for blueprint in import_objs(folder_path=FLASK_BLUEPRINTS_PATH, obj_type=flask.Blueprint):
+        for blueprint in import_objs(folder_path=FLASK_BLUEPRINTS_PATH, target=flask.Blueprint):
             blueprint : flask.Blueprint
             self.flask_app.register_blueprint(blueprint, url_prefix=f"/{blueprint.name}")
         

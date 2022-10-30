@@ -152,6 +152,14 @@ class DcDeployer(DcDeployerInterface):
         self._deploy_bot.setup(**params)
         
         for ext in extensions:
+            check_params = self._gather_needed_params(ext.check, **self._on_init_params)
+            if not ext.check(**check_params):
+                raise RuntimeError(f"Extension {ext} failed check")
+            
+            check_setup_params = self._gather_needed_params(ext.check_setup, **self._on_init_params)
+            if not ext.check_setup(**check_setup_params):
+                raise RuntimeError(f"Extension {ext} failed setup check")    
+            
             ext : DcExtension
             print("Setting up extension: " + ext.__class__.__name__)
             params= self._gather_needed_params(ext.setup, **self._on_init_params)
@@ -169,13 +177,10 @@ class DcDeployer(DcDeployerInterface):
         for ext in extensions:
             ext : DcExtension
             # make obj
-            if ext._hash in self.extensions:
-                self.logger.warning(f"Extension {ext} already loaded")
-                continue
             
-            if isinstance(ext, type):
-                ext = ext()     
-            ext._base = self
+            check_params = self._gather_needed_params(ext.check, **self._on_init_params)
+            if not ext.check(**check_params):
+                raise RuntimeError(f"Extension {ext} failed check")
                             
             self._init_extension(ext, **self._on_init_params)
 

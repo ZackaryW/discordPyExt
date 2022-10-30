@@ -32,7 +32,7 @@ class DcExtension:
     _hash = None
     _base : DcDeployerInterface = None
         
-    def __hash__(self) -> int:
+    def __hash__(self, *args, **kwargs) -> int:
         return hash(self._hash)
     
     def check_init(self):
@@ -40,6 +40,19 @@ class DcExtension:
         this function executes before init
         """
         return True
+    
+    def check_setup(self, *args, **kwargs):
+        """
+        this function executes before setup
+        """
+        return True
+    
+    def check(self, *args, **kwargs):
+        """
+        this function executes on check
+        """
+        return True
+
     
     def init(self, *args, **kwargs) -> None:
         """
@@ -91,7 +104,7 @@ class DcExtension:
         self._base.storage[__name] = __value
         
     def __getattribute__(self, __name: str):
-        if __name.startswith("_") or __name in ["check_init", "init", "setup", "run", "configs"]:
+        if __name.startswith("_") or __name in ["check_init", "init", "setup", "run", "configs", "check_setup", "check"]:
             return super().__getattribute__(__name)
         
         if self._base is None:

@@ -16,7 +16,6 @@ setup(
         "discordPyExt.interfaces",
         "discordPyExt.setup",
         "discordPyExt.setup.ext",
-        "discordPyExt.static",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

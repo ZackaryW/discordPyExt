@@ -24,15 +24,4 @@ class DcDeployerInterface:
     
     @typing.overload
     def setup(self, *extensions : typing.List): pass
-    
-    @typing.overload
-    def __init__(self, 
-        extensions : typing.List,
-        path : str,
-        logger : logging.Logger =  logging.getLogger("DcDeployer"),
-        config_path : str = "appdata",
-        setup_mode : bool = False,
-        setup_mode_check_sys_argv : bool = True,
-        no_abort : bool = False,
-        **parameters : typing.Dict[str, typing.Any]
-    ): pass
+  

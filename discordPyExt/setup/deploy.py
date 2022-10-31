@@ -48,8 +48,9 @@ class DcDeployer(DcDeployerInterface):
     def __init__(self, 
         extensions : typing.List[DcExtension],
         path : str,
+        config : DataLoader,
+        storage : Storage,
         logger : logging.Logger =  logging.getLogger("DcDeployer"),
-        config_path : str = "appdata",
         setup_mode : bool = False,
         setup_mode_check_sys_argv : bool = True,
         no_abort : bool = False,
@@ -64,9 +65,7 @@ class DcDeployer(DcDeployerInterface):
             `path` (str): the path to store data in
             
             `logger` (logging.Logger, optional): the logger to use. Defaults to logging.getLogger("DcDeployer").
-            
-            `config_path` (str, optional): the path to store config in. Defaults to "appdata".
-            
+                        
             `setup_mode` (bool, optional): whether to run in setup mode. Defaults to False.
             
             `setup_mode_check_sys_argv` (bool, optional): whether to check sys.argv for setup mode. Defaults to True.
@@ -86,6 +85,10 @@ class DcDeployer(DcDeployerInterface):
         
         self.logger = logger
         self.no_abort = no_abort
+        self.config = config
+        self.storage = storage
+        # set itself in storage
+        self.storage.deployer = self
         
         # check setup mode
         if setup_mode_check_sys_argv and len(sys.argv) > 1 and "--setup" in sys.argv:
@@ -93,20 +96,12 @@ class DcDeployer(DcDeployerInterface):
         
         self._on_init_params = parameters
         self.path = path
-        self.config_path = config_path
         # make folder        
         os.makedirs(self.path, exist_ok=True)
-        os.makedirs(self.config_path, exist_ok=True)
+
     
         # initilize loop
         self.loop = asyncio.get_event_loop()
-        
-        self.storage : Storage = Storage()
-
-        # setup config
-        self.config : DataLoader = DataLoader.create_default(
-            path=config_path,
-        )
         
         self.extension_configs :dict = {}
         

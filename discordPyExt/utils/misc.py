@@ -9,7 +9,8 @@ def import_objs(
     target : typing.Union[str, type] = None, 
     ignore_slash : bool = True, 
     only_object: bool = True, 
-    only_type: bool = False
+    only_type: bool = False,
+    skip_names : typing.List[str] = [],
 ):
     # list all files
     python_files = [f for f in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, f)) and f.endswith(".py")]
@@ -29,6 +30,9 @@ def import_objs(
             if ignore_slash and name.startswith("_"):
                 continue
             
+            if name in skip_names:
+                continue
+        
             if isinstance(target, str) and name == target:
                 yield obj
                 break
@@ -39,5 +43,4 @@ def import_objs(
             elif only_type and isinstance(obj, type) and issubclass(obj, target) and obj != target:
                 yield obj
                 break
-        
         

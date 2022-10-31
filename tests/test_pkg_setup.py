@@ -1,5 +1,7 @@
 
 import shutil
+from discordPyExt.ext.data import DataLoader
+from discordPyExt.ext.storage import Storage
 from discordPyExt.ext.testCase import TestCaseX
 from discordPyExt.setup import DcDeployer
 from discordPyExt.setup.ext import DeployFlask, DeployReplitFlaskColdTrigger, DeployFlaskSQLAlchemy
@@ -13,7 +15,8 @@ class t_setup(TestCaseX):
         dp = DcDeployer(
             extensions=[DeployFlask, DeployReplitFlaskColdTrigger, DeployFlaskSQLAlchemy],
             path="test_data/setup",
-            config_path="test_data/config",
+            storage=Storage(),
+            config=DataLoader.create_default("test_data/config"),
             setup_mode=True,
             no_abort=True
         )
@@ -32,7 +35,8 @@ class t_setup(TestCaseX):
         dp = DcDeployer(
             extensions=[DeployFlask, DeployReplitFlaskColdTrigger, DeployFlaskSQLAlchemy],
             path="test_data/setup",
-            config_path="test_data/config",
+            storage=Storage(),
+            config=DataLoader.create_default("test_data/config"),
             # in memory
             SQLALCHEMY_DATABASE_URI = "sqlite://",
         )

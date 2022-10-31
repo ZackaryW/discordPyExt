@@ -2,7 +2,7 @@ import os
 import typing
 import inspect
 import importlib
-
+from importlib.util import module_from_spec, spec_from_file_location
 
 def import_objs(
     folder_path : str, 
@@ -21,10 +21,16 @@ def import_objs(
     
     # folder path to package format
     folder_package = folder_path.replace("\\", ".").replace("/", ".")
+
     
     # import all files
     for file in python_files:
-        pkg = importlib.import_module(f"{folder_package}.{os.path.splitext(file)[0]}")
+        # import moodule in os.getcwd()
+        spec = spec_from_file_location(file, os.path.join(os.getcwd(), folder_path, file))
+        pkg = module_from_spec(spec)
+        spec.loader.exec_module(pkg)
+        
+        #pkg = importlib.import_module(f"{folder_package}.{os.path.splitext(file)[0]}")
 
         if target is None:
             if yield_file_name:

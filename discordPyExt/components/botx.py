@@ -46,3 +46,9 @@ class BotX(commands.Bot):
             return guild.get_member(id) or guild.fetch_member(id)
         else:
             raise ValueError(f'Unknown object type {obj_type}!')
+        
+    async def on_ready(self):
+        print("Logged in as {0.user}".format(self))
+        
+    async def setup_hook(self) -> None:
+        await self.tree.sync()

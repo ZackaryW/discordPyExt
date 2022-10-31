@@ -11,9 +11,13 @@ def import_objs(
     only_object: bool = True, 
     only_type: bool = False,
     skip_names : typing.List[str] = [],
+    yield_file_name : bool = False,
 ):
     # list all files
-    python_files = [f for f in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, f)) and f.endswith(".py")]
+   
+    python_files = [
+        f for f in os.listdir(os.path.join(os.getcwd(), folder_path)) if os.path.isfile(os.path.join(folder_path, f)) and f.endswith(".py")
+    ]
     
     # folder path to package format
     folder_package = folder_path.replace("\\", ".").replace("/", ".")
@@ -23,6 +27,9 @@ def import_objs(
         pkg = importlib.import_module(f"{folder_package}.{os.path.splitext(file)[0]}")
 
         if target is None:
+            if yield_file_name:
+                yield pkg, file
+                continue
             yield pkg
             continue
         
@@ -34,13 +41,25 @@ def import_objs(
                 continue
         
             if isinstance(target, str) and name == target:
+                if yield_file_name:
+                    yield obj, file
+                    break
+                
                 yield obj
                 break
             elif only_object and isinstance(obj, target) and obj != target:
+                if yield_file_name:
+                    yield obj, file
+                    break
+                
                 yield obj
                 break
             
             elif only_type and isinstance(obj, type) and issubclass(obj, target) and obj != target:
+                if yield_file_name:
+                    yield obj, file
+                    break
+                
                 yield obj
                 break
         

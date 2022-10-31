@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="DiscordPyExt",
-    version="0.0.1",
+    version="0.0.2",
     author="Zackary W",
     description="extended utilities for discord.py",
     long_description="extended utilities for discord.py",
@@ -37,5 +37,11 @@ setup(
             "flask",
             "flask_sqlalchemy",
         ]
-    }
+    },
+    #entry points
+    entry_points={
+        "console_scripts": [
+            "dcpyext_deploy=discordPyExt.utils.deploy:deploy",
+        ]
+    },
 )

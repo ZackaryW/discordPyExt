@@ -23,6 +23,9 @@ def get_format_vars(string : str):
     returns {"user" : str}
     
     """
+    if string is None:
+        return []
+    
     if not isinstance(string, str):
         raise TypeError("string must be a string")
     
@@ -68,7 +71,7 @@ def get_format_vars(string : str):
     return fields_dict
 
 def format_string(string : str, format_vars =None, **kwargs):
-    # 
+    
     if format_vars is None:
         vars = get_format_vars(string)
     else:

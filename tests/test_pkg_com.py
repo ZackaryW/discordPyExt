@@ -27,18 +27,43 @@ class text(TestCaseX):
 from discordPyExt import EmbedFactory
 
 class t_embed_factory(TestCaseX):
-    def test_1(self):
-        f = EmbedFactory(
+    def setUp(self) -> None:
+        self.f = EmbedFactory(
             title="hello, {user}",
             description="hello, {server}",
         ).field(
             name="{user}, please read the rules",
             value="1. {user} is not allowed to do {action}",
-        )
+        )    
 
-        embed = f.build(
+    def test_1(self):
+        
+        embed = self.f.build(
             user="test",
             server="test",
             action="testaction",
         )
-        pass
+        
+        self.assertEqual(embed.title, "hello, test")
+        self.assertEqual(embed.description, "hello, test")
+        self.assertEqual(embed.fields[0].name, "test, please read the rules")
+        self.assertEqual(embed.fields[0].value, "1. test is not allowed to do testaction")
+        
+        embed2 = self.f.editEmbed(
+            embed=embed,
+            user="test2",
+            server="test2",
+            action="testaction2",
+        ) 
+        
+        self.assertEqual(embed2.title, "hello, test2")
+        self.assertEqual(embed2.description, "hello, test2")
+        self.assertEqual(embed2.fields[0].name, "test2, please read the rules")
+        self.assertEqual(embed2.fields[0].value, "1. test2 is not allowed to do testaction2")
+
+        val = self.f.extractKey(
+            embed=embed2,
+            name="action",
+        )
+
+        self.assertEqual(val, "testaction2")

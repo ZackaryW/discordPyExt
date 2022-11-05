@@ -77,6 +77,10 @@ class TextMeta(ModelMetaclass):
             #missing text
             raise ValueError("Missing text")
         
+        if isinstance(text, (float, int, bool)):
+            # convert to string
+            text = str(text)
+        
         if not isinstance(text, str):
             # text is a Text cls
             # append the wrapper in front 
@@ -208,6 +212,11 @@ class TextInterface(BaseModel, metaclass=TextMeta):
     @classmethod
     def TimeShort(cls, text: str):
         return cls(text, TextMappingTypes.TIME_SHORT)
+    
+    
+    @classmethod
+    def Now(cls):
+        return cls(int(datetime.datetime.utcnow().timestamp()), TextMappingTypes.TIME)
     
     @classmethod
     def fromRaw(cls, text:str):
